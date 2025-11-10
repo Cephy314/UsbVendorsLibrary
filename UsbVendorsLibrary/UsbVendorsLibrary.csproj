@@ -5,7 +5,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>UsbVendorsLibrary</PackageId>
         <Description>Fast, low-memory lookups of USB vendor and product names from usb.ids.</Description>
         <Authors>Victoria Beauray Sagady</Authors>
@@ -13,11 +12,10 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <Title>USB Vendors Library</Title>
         <Copyright>2025 Victoria Beauray Sagady</Copyright>
-        <PackageLicenseUrl>https://mit-license.org/</PackageLicenseUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageTags>usb device vendor id</PackageTags>
-        <PackageReleaseNotes># 1.0.0
-Initial release of this simple but helpful library.  Built against the Linux-usb list distribution to allow fast lookups of vendor and products by ID.</PackageReleaseNotes>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
 
     <ItemGroup>
