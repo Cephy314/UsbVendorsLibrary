@@ -13,7 +13,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <Title>USB Vendors Library</Title>
         <Copyright>2025 Victoria Beauray Sagady</Copyright>
-        <PackageLicenseUrl>MIT</PackageLicenseUrl>
+        <PackageLicenseUrl>https://mit-license.org/</PackageLicenseUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageTags>usb device vendor id</PackageTags>
         <PackageReleaseNotes># 1.0.0
