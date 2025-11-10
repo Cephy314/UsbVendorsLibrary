@@ -8,9 +8,16 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>UsbVendorsLibrary</PackageId>
         <Description>Fast, low-memory lookups of USB vendor and product names from usb.ids.</Description>
-        <Authors>UsbVendorsLibrary</Authors>
-        <RepositoryUrl>https://example.invalid/UsbVendorsLibrary</RepositoryUrl>
+        <Authors>Victoria Beauray Sagady</Authors>
+        <RepositoryUrl>https://github.com/Cephy314/UsbVendorsLibrary</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Title>USB Vendors Library</Title>
+        <Copyright>2025 Victoria Beauray Sagady</Copyright>
+        <PackageLicenseUrl>MIT</PackageLicenseUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>usb device vendor id</PackageTags>
+        <PackageReleaseNotes># 1.0.0
+Initial release of this simple but helpful library.  Built against the Linux-usb list distribution to allow fast lookups of vendor and products by ID.</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
