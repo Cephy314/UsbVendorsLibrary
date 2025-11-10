@@ -1,0 +1,133 @@
+name: 'Release'
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  publish:
+    name: Publish Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4.2.0
+        with:
+          versionSpec: '6.4.x'
+
+      - name: Determine Version
+        id: version_step
+        uses: gittools/actions/gitversion/execute@v4.2.0
+        with:
+          updateAssemblyInfo: true
+
+      - name: Validate release tag
+        env:
+          SEMVER: ${{ steps.version_step.outputs.semVer }}
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          EXPECTED_TAG="v${SEMVER}"
+          if [ "${TAG_NAME}" != "${EXPECTED_TAG}" ] && [ "${TAG_NAME}" != "${SEMVER}" ]; then
+            echo "Release tag ${TAG_NAME} does not match GitVersion output ${SEMVER}" >&2
+            exit 1
+          fi
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21.x'
+
+      - name: Install git-chglog
+        run: go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
+
+      - name: Generate release notes
+        id: changelog
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          git-chglog --config .chglog/config.yml "${TAG_NAME}" > RELEASE_NOTES.md
+          echo "notes_path=RELEASE_NOTES.md" >> "${GITHUB_OUTPUT}"
+
+      - name: Update release body
+        uses: actions/github-script@v7
+        env:
+          NOTES_PATH: ${{ steps.changelog.outputs.notes_path }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync(process.env.NOTES_PATH, 'utf8');
+            await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: context.payload.release.id,
+              body
+            });
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore UsbVendorsLibrary.sln
+
+      - name: Pack library
+        env:
+          PACKAGE_VERSION: ${{ steps.version_step.outputs.semVer }}
+          ASSEMBLY_VERSION: ${{ steps.version_step.outputs.assemblySemVer }}
+          ASSEMBLY_FILE_VERSION: ${{ steps.version_step.outputs.assemblySemFileVer }}
+          INFORMATIONAL_VERSION: ${{ steps.version_step.outputs.informationalVersion }}
+        run: |
+          dotnet pack UsbVendorsLibrary/UsbVendorsLibrary.csproj \
+            -c Release \
+            /p:Version=${PACKAGE_VERSION} \
+            /p:AssemblyVersion=${ASSEMBLY_VERSION} \
+            /p:FileVersion=${ASSEMBLY_FILE_VERSION} \
+            /p:InformationalVersion="${INFORMATIONAL_VERSION}" \
+            /p:PackageVersion=${PACKAGE_VERSION} \
+            /p:ContinuousIntegrationBuild=true \
+            --no-restore
+
+      - name: Locate package
+        id: package_path
+        env:
+          VERSION: ${{ steps.version_step.outputs.semVer }}
+        run: |
+          PACKAGE_PATH="UsbVendorsLibrary/bin/Release/UsbVendorsLibrary.${VERSION}.nupkg"
+          if [ ! -f "${PACKAGE_PATH}" ]; then
+            echo "Expected package ${PACKAGE_PATH} was not found." >&2
+            exit 1
+          fi
+          echo "package_path=${PACKAGE_PATH}" >> "${GITHUB_OUTPUT}"
+
+      - name: Upload package to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.package_path.outputs.package_path }}
+          asset_name: UsbVendorsLibrary.${{ steps.version_step.outputs.semVer }}.nupkg
+          asset_content_type: application/octet-stream
+
+      - name: Push to NuGet (optional)
+        if: ${{ secrets.NUGET_API_KEY != '' }}
+        env:
+          VERSION: ${{ steps.version_step.outputs.semVer }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          dotnet nuget push "UsbVendorsLibrary/bin/Release/UsbVendorsLibrary.${VERSION}.nupkg" \
+            --api-key "${NUGET_API_KEY}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
