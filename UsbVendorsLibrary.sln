@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsbVendorsLibrary", "UsbVendorsLibrary\UsbVendorsLibrary.csproj", "{AC3B9B75-9B2F-4E59-B466-2785AC7F5365}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC3B9B75-9B2F-4E59-B466-2785AC7F5365}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC3B9B75-9B2F-4E59-B466-2785AC7F5365}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC3B9B75-9B2F-4E59-B466-2785AC7F5365}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC3B9B75-9B2F-4E59-B466-2785AC7F5365}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
