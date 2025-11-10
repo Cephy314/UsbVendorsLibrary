@@ -12,6 +12,8 @@ jobs:
   publish:
     name: Publish Package
     runs-on: ubuntu-latest
+    env:
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
     steps:
       - name: Checkout
@@ -122,10 +124,10 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Push to NuGet (optional)
-        if: ${{ secrets.NUGET_API_KEY != '' }}
+        if: ${{ env.NUGET_API_KEY != '' }}
         env:
           VERSION: ${{ steps.version_step.outputs.semVer }}
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ env.NUGET_API_KEY }}
         run: |
           dotnet nuget push "UsbVendorsLibrary/bin/Release/UsbVendorsLibrary.${VERSION}.nupkg" \
             --api-key "${NUGET_API_KEY}" \
