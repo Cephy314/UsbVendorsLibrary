@@ -26,6 +26,7 @@ Initial release of this simple but helpful library.  Built against the Linux-usb
         </EmbeddedResource>
         <None Include="../External/usb.ids" Pack="true" PackagePath="contentFiles/any/any/usb.ids" />
         <None Include="../README.md" Pack="true" PackagePath="/" />
+        <None Include="../LICENSE" Pack="true" PackagePath="/" />
     </ItemGroup>
 
 </Project>
