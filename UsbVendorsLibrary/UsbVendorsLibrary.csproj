@@ -14,7 +14,6 @@
         <Copyright>2025 Victoria Beauray Sagady</Copyright>
         <RepositoryType>Git</RepositoryType>
         <PackageTags>usb device vendor id</PackageTags>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
 
