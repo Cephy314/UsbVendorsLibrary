@@ -1,15 +1,14 @@
-UsbVendorsLibrary
-=================
+# UsbVendorsLibrary
 
 Fast, low‑memory lookups of USB vendor and product names sourced from `usb.ids`.
 
-Features
+## Features
 - O( log n ) lookups via binary search over compact arrays
 - Very small memory footprint (no per‑vendor dictionary overhead)
 - Primary API: vendorId -> name, (vendorId, productId) -> name
 - Optional reverse lookups (name -> id) built lazily on first use
 
-Basic Usage
+## Basic Usage
 ```csharp
 using UsbVendorsLibrary;
 
@@ -38,10 +37,10 @@ if (UsbIds.TryGetProductIdByName(0x03E7, "Myriad VPU [Movidius Neural Compute St
 Console.WriteLine($"Data version: {UsbIds.Version} ({UsbIds.Date})");
 ```
 
-Data Source
-- Embedded copy of `usb.ids` (Linux USB IDs). The file is also packed as `contentFiles/any/any/usb.ids` for reference.
+## Data Source
+- Embedded copy of `usb.ids` (Linux USB IDs) from [**Linux-usb.org**](http://www.linux-usb.org/). The file is also packed as `contentFiles/any/any/usb.ids` for reference. 
 
-Notes
+## Notes
 - Reverse lookup maps are built on demand to keep memory usage low.
 - Interface/class code sections in `usb.ids` are intentionally ignored; only vendors and products are indexed.
 
