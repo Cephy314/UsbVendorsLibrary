@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>UsbVendorsLibrary</PackageId>
+        <Description>Fast, low-memory lookups of USB vendor and product names from usb.ids.</Description>
+        <Authors>UsbVendorsLibrary</Authors>
+        <RepositoryUrl>https://example.invalid/UsbVendorsLibrary</RepositoryUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="../External/usb.ids">
+            <LogicalName>UsbVendorsLibrary.usb.ids</LogicalName>
+        </EmbeddedResource>
+        <None Include="../External/usb.ids" Pack="true" PackagePath="contentFiles/any/any/usb.ids" />
+        <None Include="../README.md" Pack="true" PackagePath="/" />
+    </ItemGroup>
+
+</Project>
