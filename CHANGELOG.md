@@ -8,3 +8,5 @@ All notable changes to this project will be documented here. This file is genera
 - Added NuGet information to project
 - Initial Commit
 - Initial commit
+
+_temp edit for release testing_
